@@ -10,4 +10,11 @@ Transformer-based object detection methods have demonstrated superior performanc
 4/26 submit
 
 
+
+
+
+
+
+Baseline：https://github.com/Intellindust-AI-Lab/DEIM.git
+
 DATASET: 通过网盘分享的文件：data 链接: https://pan.baidu.com/s/1IpGRv_WazPbjmxhGtylsGQ 提取码: 6666
