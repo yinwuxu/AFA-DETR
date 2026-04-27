@@ -42,7 +42,7 @@ class C-SimAM(nn.Module):
 
 #     def forward(self, x):
 #         b, c, h, w = x.size()
-#         n = h * w - 1  # 官方精髓 1：无偏估计的分母
+#         n = h * w - 1  
 #         x_mean = x.mean(dim=(2, 3), keepdim=True)
 #         x_minus_mu_square = (x - x_mean) ** 2
 #         x_var = x_minus_mu_square.sum(dim=(2, 3), keepdim=True) / n
@@ -54,7 +54,6 @@ class C-SimAM(nn.Module):
 #
 
 
-#  推理专用
 def fuse_conv_bn(conv: nn.Conv2d, bn: nn.BatchNorm2d) -> nn.Conv2d:
     bn.eval()
     w = conv.weight
@@ -95,7 +94,7 @@ def fuse_sequential_conv_bn(seq: nn.Sequential) -> nn.Sequential:
 
 
 class BasicConv(nn.Module):
-    """推理专用：Conv+BN 已折叠，去掉 BN 层。"""
+
 
     def __init__(self, conv: nn.Conv2d, use_relu: bool = True):
         super().__init__()
@@ -341,7 +340,7 @@ class ASFF_2(nn.Module):
         self.gamma = gamma
         compress_c = 4
 
-        # 权重生成 (保持不变)
+
         self.weight_level_1 = BasicConv(inter_dim, compress_c, 1, 1)
         self.weight_level_2 = BasicConv(inter_dim, compress_c, 1, 1)
         self.weight_levels = nn.Conv2d(compress_c * 2, 2, kernel_size=1, stride=1, padding=0)
@@ -361,14 +360,12 @@ class ASFF_2(nn.Module):
         levels_weight_v = torch.cat((level_1_weight_v, level_2_weight_v), 1)
         levels_weight = self.weight_levels(levels_weight_v)
 
-        # ✅ tau=1.0 (默认, 文献推荐)
         levels_weight = F.softmax(levels_weight, dim=1)
 
         fused = (input1 * levels_weight[:, 0:1] +
                  input2 * levels_weight[:, 1:2])
         out = self.conv(fused)
 
-        # ✅ 简化残差 (固定gamma)
         return fused + self.gamma * out
 
 
@@ -407,9 +404,6 @@ class ASFF_3(nn.Module):
         return fused + 0.1 * out
 
 
-# ===============================
-# BlockBody目前最优
-# ===============================
 
 
 class BlockBody(nn.Module):
@@ -704,7 +698,7 @@ class AFA_encoder(nn.Module):
         self.conv11 = BasicConv(in_channels[1] // 4, out_channels, 1)
         self.conv22 = BasicConv(in_channels[2] // 4, out_channels, 1)
 
-        # 权重初始化
+    
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 nn.init.xavier_normal_(m.weight, gain=0.02)
