@@ -15,6 +15,6 @@ Transformer-based object detection methods have demonstrated superior performanc
 
 
 
-Baseline：https://github.com/Intellindust-AI-Lab/DEIM.git
+Baseline：https://github.com/Intellindust-AI-Lab/DEIM.git,这边只把论文核心部分即插即用模块AFA-encoder这一部分上传
 
 DATASET: 通过网盘分享的文件：data 链接: https://pan.baidu.com/s/1IpGRv_WazPbjmxhGtylsGQ 提取码: 6666
