@@ -19,9 +19,8 @@ from timm.layers import trunc_normal_
 __all__ = ['AFA_encoder']
 
 
-class C-SimAM(nn.Module):
-    """ SimAM: A Parameter-free Attention Module (CVPR 2021) """
-
+class LPPA(nn.Module):
+  
     def __init__(self, e_lambda=1e-4):
         super().__init__()
         self.e_lambda = e_lambda
