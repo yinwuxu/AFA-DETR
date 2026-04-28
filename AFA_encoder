@@ -148,7 +148,7 @@ class GhostBottleneck(nn.Module):
         )
 
         if use_simam:
-            self.simam = C - SimAM()
+            self.simam = LPPA()
         else:
             self.simam = nn.Identity()
 
